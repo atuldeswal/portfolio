@@ -1,256 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atul Deswal's Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atul Deswal's Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
-        :root {
-            --bg-color: #121212;
-            --text-color: #00ff41;
-            --accent-color: #ffd700;
-            --vh: 1vh;
-        }
+    :root {
+      --bg-color: #121212;
+      --text-color: #00ff41;
+      --accent-color: #ffd700;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Roboto Mono', monospace;
-            height: calc(var(--vh, 1vh) * 100);
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Roboto Mono', monospace;
+      min-height: 100vh; /* fix mobile vh issue */
+      width: 100%;
+      overflow-x: hidden; /* prevent sideways scroll */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem; /* spacing for mobile */
+      box-sizing: border-box;
+    }
 
-        .terminal-container {
-            width: 90%;
-            max-width: 900px;
-            height: calc(var(--vh, 1vh) * 90);
-            max-height: 700px;
-            background-color: #212121;
-            border-radius: 8px;
-            border: 2px solid #333;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    .terminal-container {
+      width: 100%;
+      max-width: 900px;
+      height: auto;          /* let content expand naturally */
+      max-height: 90vh;      /* prevent overflow on mobile */
+      background-color: #212121;
+      border-radius: 8px;
+      border: 2px solid #333;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        .terminal-header {
-            background-color: #2c2c2c;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #333;
-        }
+    .terminal-header {
+      background-color: #2c2c2c;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #333;
+    }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
 
-        .dot.red { background-color: #ff5f56; }
-        .dot.yellow { background-color: #ffbd2e; }
-        .dot.green { background-color: #27c93f; }
+    .dot.red { background-color: #ff5f56; }
+    .dot.yellow { background-color: #ffbd2e; }
+    .dot.green { background-color: #27c93f; }
 
-        .terminal-screen {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            line-height: 1.5;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
+    .terminal-screen {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
 
-        .terminal-screen::-webkit-scrollbar {
-            display: none;
-        }
+    .terminal-screen::-webkit-scrollbar {
+      display: none;
+    }
 
-        .terminal-input-container {
-            padding: 16px 20px;
-            border-top: 2px solid #333;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
+    .terminal-input-container {
+      padding: 12px 16px;
+      border-top: 2px solid #333;
+      display: flex;
+      align-items: center;
+      position: relative;
+      flex-wrap: wrap; /* make input + prompt wrap on tiny screens */
+    }
 
-        .cursor {
-            width: 10px;
-            height: 1em;
-            background-color: var(--text-color);
-            margin-left: 5px;
-            animation: blink 1s step-end infinite;
-        }
+    .cursor {
+      width: 10px;
+      height: 1em;
+      background-color: var(--text-color);
+      margin-left: 5px;
+      animation: blink 1s step-end infinite;
+    }
 
-        .text-input {
-            background: none;
-            border: none;
-            outline: none;
-            color: var(--text-color);
-            font-family: 'Roboto Mono', monospace;
-            flex-grow: 1;
-        }
+    .text-input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-color);
+      font-family: 'Roboto Mono', monospace;
+      flex-grow: 1;
+      min-width: 100px; /* stops shrinking too much */
+    }
 
-        .prompt {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        
-        .on-screen-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            padding: 1rem;
-            width: 100%;
-        }
+    .prompt {
+      color: var(--accent-color);
+      font-weight: bold;
+      margin-right: 5px;
+      white-space: nowrap;
+    }
 
-        .on-screen-buttons button {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        
-        .on-screen-buttons button:hover {
-            transform: scale(1.05);
-        }
+    .on-screen-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-        .loading-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 10;
-        }
+    .on-screen-buttons button {
+      background-color: var(--accent-color);
+      color: var(--bg-color);
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      flex: 1 1 auto; /* responsive buttons */
+      max-width: 140px; /* keep buttons neat */
+    }
 
-        .loading-text {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-        }
+    .on-screen-buttons button:hover {
+      transform: scale(1.05);
+    }
 
-        .loading-bar-container {
-            width: 300px;
-            height: 20px;
-            background-color: #2c2c2c;
-            border: 1px solid #333;
-            margin-top: 1rem;
-        }
+    .loading-screen {
+      position: fixed; /* ensure full cover */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+    }
 
-        .loading-bar {
-            height: 100%;
-            width: 0;
-            background-color: var(--text-color);
-            transition: width 0.5s linear;
-        }
-        
-        .animated-text {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 2s steps(40, end);
-        }
+    .loading-text {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
 
-        @keyframes blink {
-            from, to { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-    </style>
+    .loading-bar-container {
+      width: 80%;
+      max-width: 300px;
+      height: 20px;
+      background-color: #2c2c2c;
+      border: 1px solid #333;
+      margin-top: 1rem;
+    }
+
+    .loading-bar {
+      height: 100%;
+      width: 0;
+      background-color: var(--text-color);
+      transition: width 0.5s linear;
+    }
+
+    .animated-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 2s steps(40, end);
+    }
+
+    @keyframes blink {
+      from, to { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <script>
-        function setFullHeight() {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
+  <div class="loading-screen" id="loadingScreen">
+    <h1 class="text-4xl font-bold">LOADING PORTFOLIO.EXE</h1>
+    <div class="loading-bar-container mt-4">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <div class="terminal-container hidden" id="terminal">
+    <div class="terminal-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <div class="terminal-screen" id="terminalScreen">
+      <p>Initializing OS...
+        <br>Welcome to the digital realm of Atul Deswal.
+        <br>Type <span class="text-white">'help'</span> to begin your journey.</p>
+    </div>
+    <div class="terminal-input-container">
+      <span class="prompt">guest@atuldeswal.dev:~$</span>
+      <input type="text" class="text-input" id="terminalInput" autocomplete="off" autofocus>
+    </div>
+    <div class="on-screen-buttons">
+      <button onclick="handleButtonCommand('help')">Help</button>
+      <button onclick="handleButtonCommand('summary')">Summary</button>
+      <button onclick="handleButtonCommand('skills')">Skills</button>
+      <button onclick="handleButtonCommand('projects')">Projects</button>
+      <button onclick="handleButtonCommand('experience')">Experience</button>
+      <button onclick="handleButtonCommand('contact')">Contact</button>
+      <button onclick="handleButtonCommand('clear')">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const loadingBar = document.getElementById('loadingBar');
+      const terminal = document.getElementById('terminal');
+      const terminalScreen = document.getElementById('terminalScreen');
+      const terminalInput = document.getElementById('terminalInput');
+
+      let loadingProgress = 0;
+      const loadingInterval = setInterval(() => {
+        loadingProgress += Math.random() * 20;
+        if (loadingProgress >= 100) {
+          loadingProgress = 100;
+          clearInterval(loadingInterval);
+          setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+            terminal.classList.remove('hidden');
+            terminalInput.focus();
+            printText(terminalScreen, "");
+          }, 500);
         }
-        setFullHeight();
-        window.addEventListener('resize', setFullHeight);
-    </script>
-    <div class="loading-screen" id="loadingScreen">
-        <h1 class="text-4xl font-bold">LOADING PORTFOLIO.EXE</h1>
-        <div class="loading-bar-container mt-4">
-            <div class="loading-bar" id="loadingBar"></div>
-        </div>
-    </div>
-    
-    <div class="terminal-container hidden" id="terminal">
-        <div class="terminal-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-        </div>
-        <div class="terminal-screen" id="terminalScreen">
-            <p>Initializing OS...
-                <br>Welcome to the digital realm of Atul Deswal.
-                <br>Type <span class="text-white">'help'</span> to begin your journey.</p>
-        </div>
-        <div class="terminal-input-container">
-            <span class="prompt">guest@atuldeswal.dev:~$</span>
-            <input type="text" class="text-input" id="terminalInput" autocomplete="off" autofocus>
-        </div>
-        <div class="on-screen-buttons">
-            <button onclick="handleButtonCommand('help')">Help</button>
-            <button onclick="handleButtonCommand('summary')">Summary</button>
-            <button onclick="handleButtonCommand('skills')">Skills</button>
-            <button onclick="handleButtonCommand('projects')">Projects</button>
-            <button onclick="handleButtonCommand('experience')">Experience</button>
-            <button onclick="handleButtonCommand('contact')">Contact</button>
-            <button onclick="handleButtonCommand('clear')">Clear</button>
-        </div>
-    </div>
+        loadingBar.style.width = loadingProgress + '%';
+      }, 100);
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const loadingBar = document.getElementById('loadingBar');
-            const terminal = document.getElementById('terminal');
-            const terminalScreen = document.getElementById('terminalScreen');
-            const terminalInput = document.getElementById('terminalInput');
-            
-            let loadingProgress = 0;
-            const loadingInterval = setInterval(() => {
-                loadingProgress += Math.random() * 20;
-                if (loadingProgress >= 100) {
-                    loadingProgress = 100;
-                    clearInterval(loadingInterval);
-                    setTimeout(() => {
-                        loadingScreen.classList.add('hidden');
-                        terminal.classList.remove('hidden');
-                        terminalInput.focus();
-                        printText(terminalScreen, "");
-                    }, 500);
-                }
-                loadingBar.style.width = loadingProgress + '%';
-            }, 100);
-
-            let history = [];
-            let historyIndex = 0;
-            const content = {
-                'help': `
+      let history = [];
+      let historyIndex = 0;
+      const content = {
+        'help': `
 Welcome, adventurer. Available commands:
 - <span class="text-white">summary</span>: A quick overview of my skills.
 - <span class="text-white">skills</span>: My full tech stack.
@@ -259,17 +260,17 @@ Welcome, adventurer. Available commands:
 - <span class="text-white">contact</span>: How to reach me for your next quest.
 - <span class="text-white">clear</span>: Clear the terminal screen.
 `,
-                'summary': `
+        'summary': `
 I am a Full-Stack Software Developer & Game Dev, proficient in Flutter, Python, Django, Node.js, and Express.js. My expertise lies in backend development, API integration, and database optimization. I'm also skilled in Unreal Engine 5 (C++, Blueprints) for game development. My journey is one of continuous learning and agile collaboration.
 `,
-                'skills': `
+        'skills': `
 - <span class="text-accent-color font-bold">Programming Languages:</span> C/C++, Python, Dart, Blueprints (UE5)
 - <span class="text-accent-color font-bold">Web Dev:</span> Tailwind, ReactJS, NodeJS
 - <span class="text-accent-color font-bold">Frameworks:</span> Flutter, Django, Express
 - <span class="text-accent-color font-bold">Databases:</span> MongoDB, PostgreSQL, Firestore, SupaBase
 - <span class="text-accent-color font-bold">Version Control:</span> Git, GitHub, Perforce
 `,
-                'experience': `
+        'experience': `
 <span class="text-accent-color font-bold">DAM Studioz</span> | Programmer Level-1 (April 2024 - Present)
 > - Developed and optimized gameplay systems using Unreal Engine 5.
 > - Implemented core gameplay mechanics with C++ and Blueprints.
@@ -278,7 +279,7 @@ I am a Full-Stack Software Developer & Game Dev, proficient in Flutter, Python, 
 > - Collaborated with cross-functional teams on project execution.
 > - Gained experience in backend development and project management.
 `,
-                'projects': `
+        'projects': `
 <span class="text-accent-color font-bold">Blog App</span>
 > - <a href="https://github.com/hunnydeswal2/blog_app_clean_architecture" target="_blank" class="text-white underline hover:no-underline">GitHub Link</a> - A Flutter-based blogging app with Clean Architecture and Supabase.
 <br>
@@ -291,91 +292,90 @@ I am a Full-Stack Software Developer & Game Dev, proficient in Flutter, Python, 
 <span class="text-accent-color font-bold">Heavy Driver Tracker</span>
 > - <a href="https://github.com/hunnydeswal2/Heavy_Driver_Tracker_App" target="_blank" class="text-white underline hover:no-underline">GitHub Link</a> - A mobile application for real-time driver tracking and accident detection.
 `,
-                'contact': `
+        'contact': `
 <span class="text-accent-color font-bold">GitHub:</span> <a href="https://github.com/hunnydeswal2" target="_blank" class="text-white underline hover:no-underline">https://github.com/hunnydeswal2</a>
 <span class="text-accent-color font-bold">LinkedIn:</span> <a href="https://linkedin.com/in/atuldeswal" target="_blank" class="text-white underline hover:no-underline">https://linkedin.com/in/atuldeswal</a>
 <span class="text-accent-color font-bold">Email:</span> <a href="mailto:HUNNYDESWAL2@GMAIL.COM" class="text-white underline hover:no-underline">HUNNYDESWAL2@GMAIL.COM</a>
 `
-            };
-            
-            window.handleButtonCommand = function(command) {
-                const promptLine = document.createElement('p');
-                promptLine.innerHTML = `<span class="prompt">guest@atuldeswal.dev:~$</span> ${command}`;
-                terminalScreen.appendChild(promptLine);
-                
-                if (command === 'clear') {
-                    terminalScreen.innerHTML = '';
-                    return;
-                }
+      };
 
-                if (content[command]) {
-                    printText(terminalScreen, content[command]);
-                } else {
-                    printText(terminalScreen, `Command not found: '${command}'. Type 'help' for a list of commands.`);
-                }
-            };
+      window.handleButtonCommand = function(command) {
+        const promptLine = document.createElement('p');
+        promptLine.innerHTML = `<span class="prompt">guest@atuldeswal.dev:~$</span> ${command}`;
+        terminalScreen.appendChild(promptLine);
 
+        if (command === 'clear') {
+          terminalScreen.innerHTML = '';
+          return;
+        }
 
-            function printText(element, text) {
-                const lines = text.split('\n');
-                let lineIndex = 0;
-                const printLine = () => {
-                    if (lineIndex < lines.length) {
-                        const line = lines[lineIndex];
-                        const span = document.createElement('span');
-                        span.innerHTML = line + '\n';
-                        element.appendChild(span);
-                        element.scrollTop = element.scrollHeight;
-                        lineIndex++;
-                        setTimeout(printLine, 50);
-                    }
-                };
-                printLine();
-            }
+        if (content[command]) {
+          printText(terminalScreen, content[command]);
+        } else {
+          printText(terminalScreen, `Command not found: '${command}'. Type 'help' for a list of commands.`);
+        }
+      };
 
-            function handleCommand() {
-                const command = terminalInput.value.trim().toLowerCase();
-                if (command === '') return;
+      function printText(element, text) {
+        const lines = text.split('\n');
+        let lineIndex = 0;
+        const printLine = () => {
+          if (lineIndex < lines.length) {
+            const line = lines[lineIndex];
+            const span = document.createElement('span');
+            span.innerHTML = line + '\n';
+            element.appendChild(span);
+            element.scrollTop = element.scrollHeight;
+            lineIndex++;
+            setTimeout(printLine, 50);
+          }
+        };
+        printLine();
+      }
 
-                const promptLine = document.createElement('p');
-                promptLine.innerHTML = `<span class="prompt">guest@atuldeswal.dev:~$</span> ${command}`;
-                terminalScreen.appendChild(promptLine);
-                history.push(command);
-                historyIndex = history.length;
-                
-                terminalInput.value = '';
+      function handleCommand() {
+        const command = terminalInput.value.trim().toLowerCase();
+        if (command === '') return;
 
-                if (command === 'clear') {
-                    terminalScreen.innerHTML = '';
-                    return;
-                }
+        const promptLine = document.createElement('p');
+        promptLine.innerHTML = `<span class="prompt">guest@atuldeswal.dev:~$</span> ${command}`;
+        terminalScreen.appendChild(promptLine);
+        history.push(command);
+        historyIndex = history.length;
 
-                if (content[command]) {
-                    printText(terminalScreen, content[command]);
-                } else {
-                    printText(terminalScreen, `Command not found: '${command}'. Type 'help' for a list of commands.`);
-                }
-            }
-            
-            terminalInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleCommand();
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    if (history.length > 0) {
-                        historyIndex = (historyIndex - 1 + history.length) % history.length;
-                        terminalInput.value = history[historyIndex];
-                    }
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    if (history.length > 0) {
-                        historyIndex = (historyIndex + 1) % history.length;
-                        terminalInput.value = history[historyIndex];
-                    }
-                }
-            });
-        });
-    </script>
+        terminalInput.value = '';
+
+        if (command === 'clear') {
+          terminalScreen.innerHTML = '';
+          return;
+        }
+
+        if (content[command]) {
+          printText(terminalScreen, content[command]);
+        } else {
+          printText(terminalScreen, `Command not found: '${command}'. Type 'help' for a list of commands.`);
+        }
+      }
+
+      terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleCommand();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (history.length > 0) {
+            historyIndex = (historyIndex - 1 + history.length) % history.length;
+            terminalInput.value = history[historyIndex];
+          }
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (history.length > 0) {
+            historyIndex = (historyIndex + 1) % history.length;
+            terminalInput.value = history[historyIndex];
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
